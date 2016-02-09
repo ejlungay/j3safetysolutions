@@ -112,10 +112,7 @@
         if ($result) {
             $json_response = array('trainings' => $result);    
 
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
-
-            return true;
+            $this->output->set_content_type('application/json')->set_output(json_encode($result)); 
         }
         else {
             $json_response = array('returnMessage'=>'No available trainings',

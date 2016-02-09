@@ -79,4 +79,8 @@ $route['add_delegate']['post'] = 'delegate_controller/add_delegate';
 $route['delegate_detail']['get'] = 'delegate_controller/get_delegate_by_delegate_id';
 $route['update_delegate']['post'] = 'delegate_controller/update_delegate';
 
+//***********************************************************************************
+$route['angu'] = 'Angularjs';
+$route['src']['get'] = 'Angularjs/get_list';
+
 $route['translate_uri_dashes'] = FALSE;
