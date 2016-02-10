@@ -45,6 +45,13 @@
     </table>
   </div>
 </div>
+<div class="container">
+  <h1>Upload Test</h1>
+  <div class="col-lg-12 col-md-12">
+
+      <input type='file' accept="image/*" name='file' id='file'/>
+  </div>
+</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script> 
 <script type="text/javascript">

@@ -21,8 +21,8 @@
        //function to get the speaker id by training id
        public function get_speaker_id_by_training_id($training_id) {
          $this -> db -> select('speaker_id');
-         $this -> db -> from('training_speakers');
-         $this -> db -> where('training_id', $training_id);
+         $this -> db -> from('ntraining_speakers');
+         $this -> db -> where('traiing_id', $training_id);
          $this -> db -> limit(1);
 
          $query = $this -> db -> get();
