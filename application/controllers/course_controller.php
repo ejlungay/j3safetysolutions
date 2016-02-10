@@ -14,48 +14,62 @@
      }
      
      public function add_course() {
-        $course_name = $this->input->post('course_name');
-        $user = $this->input->post('user');
+        if ($this->input->post('course_name') != null && $this->input->post('user_id') != null) {
+            $course_name = $this->input->post('course_name');
+            $user = $this->input->post('user_id');
 
-        $result = $this->course_model->add_course($course_name, $user);
-        if ($result) {
-            $json_response = array('course_name' => $course_name,
-                                  'returnMessage'=>'Course successfully added',
-                                  ' returnValue'=>'SUCCESS');    
+            $result = $this->course_model->add_course($course_name, $user);
+            if ($result) {
+                $json_response = array('course_name' => $course_name,
+                                      'returnMessage'=>'Course successfully added',
+                                      ' returnValue'=>'SUCCESS');    
 
-           header('Content-Type: application/json');
-           echo json_encode( $json_response);
+               header('Content-Type: application/json');
+               echo json_encode( $json_response);
 
-            return true;
+                return true;
+            }
+            else {
+                $json_response = array('returnMessage'=>'Unable to add course',
+                                      'returnValue'=>'FAILED');    
+
+               header('Content-Type: application/json');
+               echo json_encode( $json_response);
+
+                return false;
+            }
         }
         else {
-            $json_response = array('returnMessage'=>'Unable to add course',
-                                  'returnValue'=>'FAILED');    
+            $json_response = array('returnMessage'=>'Invalid request',
+                                      'returnValue'=>'FAILED');    
 
-           header('Content-Type: application/json');
-           echo json_encode( $json_response);
+               header('Content-Type: application/json');
+               echo json_encode( $json_response);
 
-            return false;
+                return false;
         }
      }
 
      public function get_course_id_by_course_name() {
-        $course_name = $this->input->post('course_name');
+        $course_name = $this->input->get('course_name');
+        if ($course_name != null) {
+            $result = $this->course_model->get_course_id_by_course_name($course_name);
+            if ($result) {
+                 $this->output->set_content_type('application/json')->set_output(json_encode($result));
+            }
+            else {
+                $json_response = array('returnMessage'=>'No available course id from the given course name',
+                                      'returnValue'=>'SUCCESS');    
 
-        $result = $this->course_model->get_course_id_by_course_name($course_name);
-        if ($result) {
-            $json_response = array('course_name' => $course_name,
-                                  'course_detail'=>$result,
-                                  ' returnValue'=>'SUCCESS');    
+                header('Content-Type: application/json');
+                echo json_encode( $json_response);
 
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
-
-            return true;
+                return false;
+            }
         }
         else {
-            $json_response = array('returnMessage'=>'No available course id from the given course name',
-                                  'returnValue'=>'SUCCESS');    
+            $json_response = array('returnMessage' => 'Invalid request',
+                                      'returnValue' => 'FAILED');    
 
             header('Content-Type: application/json');
             echo json_encode( $json_response);
@@ -65,22 +79,26 @@
      }
 
      public function get_course_by_course_id() {
-        $course_id = $this->input->post('course_id');
+        $course_id = $this->input->get('course_id');
+        if ($course_id != null) {
+            $result = $this->course_model->get_course_by_course_id($course_id);
+            if ($result) {
+                $this->output->set_content_type('application/json')->set_output(json_encode($result));
+            }
+            else {
+                $json_response = array('returnMessage'=>'No available course from the given course id',
+                                      'returnValue'=>'SUCCESS');    
 
-        $result = $this->course_model->get_course_by_course_id($course_id);
-        if ($result) {
-            $json_response = array('course_id' => $course_id,
-                                  'course_detail'=>$result,
-                                  ' returnValue'=>'SUCCESS');    
+                header('Content-Type: application/json');
+                echo json_encode( $json_response);
 
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
-
-            return true;
+                return false;
+            }
         }
         else {
-            $json_response = array('returnMessage'=>'No available course from the given course id',
-                                  'returnValue'=>'SUCCESS');    
+            $json_response = array('returnMessage' => 'Invalid request',
+                                      'returnValue' => 'FAILED',
+                                      'course_id' => $course_id);    
 
             header('Content-Type: application/json');
             echo json_encode( $json_response);

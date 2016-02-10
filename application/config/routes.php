@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | controller and method URI segments.
 |
 | Examples:	my-controller/index	-> my_controller/index
-|		my-controller/my-method	-> my_controller/my_method
+|		my-controller/my-method	-> mysql_connect()ntroller/my_method
 */
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
@@ -57,10 +57,11 @@ $route['signup']['post'] = 'users/create_user_account';
 $route['signin']['post'] = 'users/signin';
 $route['change_password']['post'] = 'users/change_password';
 $route['update_user']['post'] = 'users/change_user_detail';
+
 //course routes
 $route['add_course']['post'] = 'course_controller/add_course';
-$route['course_id']['post'] = 'course_controller/get_course_id_by_course_name';
-$route['course_detail']['post'] = 'course_controller/get_course_by_course_id';
+$route['course_id']['get'] = 'course_controller/get_course_id_by_course_name';
+$route['course_detail']['get'] = 'course_controller/get_course_by_course_id';
 
 //training routes
 $route['add_training']['post'] = 'trainings_controller/add_training';
@@ -71,8 +72,7 @@ $route['training_delegates']['get'] = 'trainings_controller/get_training_delegat
 
 //routing training speaker APIs
 $route['add_speaker']['post'] = 'speaker_controller/add_training_speaker';
-$route['speaker_id']['get'] = 'speaker_controller/get_speaker_id_by_training_id';
-$route['speaker_detail']['get'] = 'speaker_controller/get_speaker_by_speaker_id';
+$route['speaker_detail']['get'] = 'speaker_controller/get_speakers_by_speaker_id';
 
 //routing delegates functions
 $route['add_delegate']['post'] = 'delegate_controller/add_delegate';

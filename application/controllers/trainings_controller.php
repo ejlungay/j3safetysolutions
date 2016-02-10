@@ -19,28 +19,42 @@
      */
      public function add_training() { 
         $course_id = $this->input->post('course_id');
+        $location = $this->input->post('location');
         $training_fee = $this->input->post('training_fee');
 
-        $result = $this->trainings_model->add_training($course_id, $training_fee);
-        if ($result) {
-            $json_response = array('course_id' => $course_id,
-                                  'returnMessage'=>'Training successfully added',
-                                  ' returnValue'=>'SUCCESS');    
+        if ($course_id != null) {
+            $result = $this->trainings_model->add_training($course_id,  $location, $training_fee);
+            if ($result) {
+                $json_response = array('course_id' => $course_id,
+                                        'location' => $location,
+                                        'training_fee' => $training_fee,
+                                      'returnMessage'=>'Training successfully added',
+                                      ' returnValue'=>'SUCCESS');    
 
-           header('Content-Type: application/json');
-           echo json_encode( $json_response);
+               header('Content-Type: application/json');
+               echo json_encode( $json_response);
 
-            return true;
-        } // end if
+                return true;
+            } // end if
+            else {
+                $json_response = array('returnMessage'=>'Unable to add training',
+                                      'returnValue'=>'FAILED');    
+
+               header('Content-Type: application/json');
+               echo json_encode( $json_response);
+
+                return false;
+            } //end else
+        }
         else {
-            $json_response = array('returnMessage'=>'Unable to add training',
-                                  'returnValue'=>'FAILED');    
+            $json_response = array('returnMessage'=>'Invalid request',
+                                      'returnValue'=>'FAILED');    
 
-           header('Content-Type: application/json');
-           echo json_encode( $json_response);
+               header('Content-Type: application/json');
+               echo json_encode( $json_response);
 
-            return false;
-        } //end else
+              return false;
+        }
      } // end function
 
      /* Function for getting training id using course id
@@ -51,26 +65,37 @@
      public function get_training_id_by_course_id() {
         $course_id = $this->input->get('course_id');
 
-        $result = $this->trainings_model->get_training_id_by_course_id($course_id);
-        if ($result) {
-            $json_response = array('course_id' => $course_id,
-                                  'result'=>$result,
-                                  ' returnValue'=>'SUCCESS');    
+        if ($course_id != null) {
+            $result = $this->trainings_model->get_training_id_by_course_id($course_id);
+            if ($result) {
+                $json_response = array('course_id' => $course_id,
+                                      'result'=>$result,
+                                      ' returnValue'=>'SUCCESS');    
 
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
+                header('Content-Type: application/json');
+                echo json_encode( $json_response);
 
-            return true;
-        } // end if
+                return true;
+            } // end if
+            else {
+                $json_response = array('returnMessage'=>'No available training id from the given course id',
+                                      'returnValue'=>'SUCCESS');    
+
+                header('Content-Type: application/json');
+                echo json_encode( $json_response);
+
+                return false;
+            } // end else
+        } 
         else {
-            $json_response = array('returnMessage'=>'No available training id from the given course id',
-                                  'returnValue'=>'SUCCESS');    
+            $json_response = array('returnMessage'=>'Invalid request',
+                                      'returnValue'=>'FAILURE');    
 
             header('Content-Type: application/json');
             echo json_encode( $json_response);
 
             return false;
-        } // end else
+        }
      } ///end function
 
      /* Function for getting a specific training detail using a training id
@@ -82,14 +107,7 @@
 
         $result = $this->trainings_model->get_training_by_training_id($training_id);
         if ($result) {
-            $json_response = array('training_id' => $training_id,
-                                  'result'=>$result,
-                                  ' returnValue'=>'SUCCESS');    
-
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
-
-            return true;
+            $this->output->set_content_type('application/json')->set_output(json_encode($result));
         }
         else {
             $json_response = array('returnMessage'=>'No available trainings from the given training id',
@@ -110,8 +128,6 @@
         $count = $this->input->get('count');
         $result = $this->trainings_model->get_trainings_list($count);
         if ($result) {
-            $json_response = array('trainings' => $result);    
-
             $this->output->set_content_type('application/json')->set_output(json_encode($result)); 
         }
         else {
@@ -132,20 +148,24 @@
      public function get_training_delegates() {
         $training_id = $this->input->get('training_id');
 
-        $result = $this->trainings_model->get_training_delegates($training_id);
-        if ($result) {
-            $json_response = array('trining_id' => $training_id,
-                                   'Delegates' => $result);    
+        if ($training_id != null) {
+            $result = $this->trainings_model->get_training_delegates($training_id);
+            if ($result) {
+                $this->output->set_content_type('application/json')->set_output(json_encode($result)); 
+            }
+            else {
+                 $json_response = array('returnMessage'=>'No available delegate from '.$training_id.' training id',
+                                      'returnValue'=>'SUCCESS');    
 
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
+                header('Content-Type: application/json');
+                echo json_encode( $json_response); 
 
-
-            return true;
+                return false;
+            }
         }
         else {
-             $json_response = array('returnMessage'=>'No available delegate from '.$training_id.' training id',
-                                  'returnValue'=>'SUCCESS');    
+            $json_response = array('returnMessage'=>'Invalid request',
+                                      'returnValue'=>'FAILURE');    
 
             header('Content-Type: application/json');
             echo json_encode( $json_response); 

@@ -18,50 +18,44 @@
         $fname =$this->input->post('firstname');
         $mname = $this->input->post('middlename');
         $lname = $this->input->post('lastname');
+        $email = $this->input->post('email');
+        $phone = $this->input->post('phone');
+        $company = $this->input->post('company');
+        $company_position = $this->input->post('company_position');
         $image = $this->input->post('image');
 
-        $result = $this->speaker_model->add_speaker($training_id, $fname, $mname, $lname, $image);
-        if ($result) {
-            $json_response = array('speaker' => $training_id,
-                                  'firstname' => $fname,
-                                  'middlename' => $mname,
-                                  'lastname' => $lname,
-                                  'returnMessage'=>'Speaker successfully added',
-                                  'returnValue'=>'SUCCESS');    
+        if ($training_id != null) {
+            $result = $this->speaker_model->add_speaker($training_id, $fname, $mname, $lname, $email, $phone, $company, $company_position, $image);
+            if ($result) {
+                $json_response = array('speaker' => $training_id,
+                                      'firstname' => $fname,
+                                      'middlename' => $mname,
+                                      'lastname' => $lname,
+                                      'email' => $email,
+                                      'phone' => $phone,
+                                      'company' => $company,
+                                      'company_position' => $company_position,
+                                      'returnMessage'=>'Speaker successfully added',
+                                      'returnValue'=>'SUCCESS');    
 
-           header('Content-Type: application/json');
-           echo json_encode( $json_response);
+               header('Content-Type: application/json');
+               echo json_encode( $json_response);
 
-            return true;
+                return true;
+            }
+            else {
+                $json_response = array('returnMessage'=>'Unable to add training speaker',
+                                      'returnValue'=>'SUCCESS');    
+
+               header('Content-Type: application/json');
+               echo json_encode( $json_response);
+
+                return false;
+            }
         }
         else {
-            $json_response = array('returnMessage'=>'Unable to add training speaker',
-                                  'returnValue'=>'SUCCESS');    
-
-           header('Content-Type: application/json');
-           echo json_encode( $json_response);
-
-            return false;
-        }
-     }
-
-     public function get_speaker_id_by_training_id() {
-        $training_id = $this->input->get('training_id');
-
-        $result = $this->speaker_model->get_speaker_id_by_training_id($training_id);
-        if ($result) {
-            $json_response = array('training_id' => $training_id,
-                                  'result'=>$result,
-                                  ' returnValue'=>'SUCCESS');    
-
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
-
-            return true;
-        }
-        else {
-            $json_response = array('returnMessage'=>'No available speaker id from the given training id',
-                                  'returnValue'=>'SUCCESS');    
+            $json_response = array('returnMessage'=>'Invalid request',
+                                      'returnValue'=>'SUCCESS');    
 
             header('Content-Type: application/json');
             echo json_encode( $json_response);
@@ -70,29 +64,33 @@
         }
      }
 
-     public function get_speaker_by_speaker_id() {
+     public function get_speakers_by_speaker_id() {
         $speaker_id = $this->input->get('speaker_id');
 
-        $result = $this->speaker_model->get_speaker_by_speaker_id($speaker_id);
-        if ($result) {
-            $json_response = array('speaker_id' => $speaker_id,
-                                  'result'=>$result,
-                                  ' returnValue'=>'SUCCESS');    
+        if ($speaker_id != null) {
+            $result = $this->speaker_model->get_speakers_by_speaker_id($speaker_id);
+            if ($result) {
+                 $this->output->set_content_type('application/json')->set_output(json_encode($result));
+            }
+            else {
+                $json_response = array('returnMessage'=>'No available speakers from the given training id',
+                                      'returnValue'=>'SUCCESS');    
 
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
+                header('Content-Type: application/json');
+                echo json_encode( $json_response);
 
-            return true;
-        }
-        else {
-            $json_response = array('returnMessage'=>'No available speakers from the given training id',
-                                  'returnValue'=>'SUCCESS');    
+                return false;
+            }
+       }
+       else {
+           $json_response = array('returnMessage'=>'Invalid request parameters',
+                                      'returnValue'=>'FAILURE');    
 
             header('Content-Type: application/json');
             echo json_encode( $json_response);
 
             return false;
-        }
+       }
      }
   }
 ?>

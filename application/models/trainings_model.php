@@ -2,10 +2,11 @@
   Class Trainings_model extends CI_Model
   {
         //function for adding training course
-       public function add_training($course_id,  $training_fee) {
+       public function add_training($course_id,  $location, $training_fee) {
           $data = array(
               'course_id' => $course_id,
-              'training_fee' => $training_fee
+              'location' => $location,
+              'fee' => $training_fee
           );
 
           return $this->db->insert('trainings', $data);
@@ -47,7 +48,7 @@
 
        // a model for querying all trainings
        public function get_trainings_list($count) {
-          $this->db->select('a.course_id, a.course_name, a.date_added, a.added_by, b.training_id, b.training_fee, b.date');
+          $this->db->select('a.course_id, a.course_name, a.date_added,  b.training_id, b.fee, b.date');
           $this->db->from('COURSE as a, TRAININGS as b');
           $this->db->limit($count);
           //$query = $this->db->select('SELECT  FROM COURSE as a, TRAININGS as b');
@@ -65,7 +66,7 @@
        // a model for querying training delegates
        public function get_training_delegates($training_id) {
           $this->db->select('c.course_name, b.*');
-          $this->db->from('Course as c, Trainings as a, Delegates b');
+          $this->db->from('course as c, trainings as a,  delegates as b');
           $this->db-> where("a.training_id = $training_id  and a.training_id = b.training_id and c.course_id = a.course_id");
           $this->db->limit(0);
           $query = $this->db->get();

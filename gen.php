@@ -1,3 +1,3 @@
 <?php
-	echo MD5('ej');
+	echo MD5('admin');
 ?>

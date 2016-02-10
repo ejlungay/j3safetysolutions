@@ -2,16 +2,16 @@
   Class Delegate_model extends CI_Model
   {
         //function for adding training course
-       public function add_delegate($training_id, $fname, $mname, $lname, $email, $company, $phone, $address, $image) {
+       public function add_delegate($training_id, $fname, $mname, $lname, $email, $company, $company_position, $phone,  $image) {
           $data = array(
               'training_id' => $training_id,
-              'fname' => $fname,
-              'mname' => $mname,
-              'lname' => $lname,
+              'firstname' => $fname,
+              'middlename' => $mname,
+              'lastname' => $lname,
               'email' => $email,
               'company'=> $company,
+              'company_position' => $company_position,
               'phone' => $phone,
-              'address' => $address,
               'image' => $image
           );
 
@@ -36,15 +36,15 @@
        }
 
        //function to update delegate detail 
-       function updateDelegateDetail($delegate_id, $fname, $mname, $lname, $email, $company, $phone, $address) {
+       function updateDelegateDetail($delegate_id, $fname, $mname, $lname, $email, $company, $company_position, $phone) {
           $data = array(
-               'fname' => $fname,
-               'mname' => $mname,
-               'lname' => $lname,
+               'firstname' => $fname,
+               'middlename' => $mname,
+               'lastname' => $lname,
                'email' => $email,
                'company' => $company,
-               'phone' => $phone,
-               'address' => $address
+               'company_position' => $company_position,
+               'phone' => $phone
             );
 
           $this->db->where('delegate_id', $delegate_id);

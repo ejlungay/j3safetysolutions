@@ -28,18 +28,18 @@
     <table ng-controller="userController" class="table table-bordered table-condensed table-responsive">
       <thead>
         <tr>
-          <th><center style="font-weight: bold;">Training ID</center></th>
-          <th><center style="font-weight: bold;">Course ID</center></th>
-          <th><center style="font-weight: bold;">Date</center></th>
-          <th><center style="font-weight: bold;">Training Fee</center></th  >
+          <th><center style="font-weight: bold;">USER ID</center></th>
+          <th><center style="font-weight: bold;">USER NAME</center></th>
+          <th><center style="font-weight: bold;">PASSWorD</center></th>
+          <th><center style="font-weight: bold;">USER TYPE</center></th  >
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="training in trainings">
-            <td>{{training.training_id}}</td>
-            <td>{{training.course_name}}</td>
-            <td>{{training.date}}</td>
-            <td>{{training.training_fee}}</td>
+            <td>{{training.username}}</td>
+            <td>{{training.firstname}}</td>
+            <td>{{training.PASS_WORD}}</td>
+            <td>{{training.USER_TYPE}}</td>
         </tr>
       </tbody>
     </table>
@@ -50,7 +50,7 @@
 <script type="text/javascript">
    function userController($scope,$http) {
        $scope.trainings = [];
-       $http.get("trainings").success(function(data) { 
+       $http.get("src").success(function(data) { 
           $scope.trainings = data;
        }).error(function(data){
            alert(data);

@@ -8,7 +8,7 @@ class User_model extends CI_Model {
     public function __construct() {
         parent::__construct();
         $this->load->database();
-        $this->table_name = 'trainings';
+        $this->table_name = 'users';
     }
     
     /*public function getAll() {
@@ -16,8 +16,8 @@ class User_model extends CI_Model {
     }*/
     
     public function getAll() {
-        $this->db->select('a.training_id, b.course_name');
-        $this->db->from('trainings as a, course as b');
+        $this->db->select('*');
+        $this->db->from('users');
         return $this->db->get()->result_array();
     }
 }

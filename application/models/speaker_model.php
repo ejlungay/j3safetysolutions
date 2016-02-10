@@ -2,16 +2,20 @@
   Class Speaker_model extends CI_Model
   {
         //function for adding training course
-       public function add_speaker($training_id, $fname, $mname, $lname, $image) {
+       public function add_speaker($training_id, $fname, $mname, $lname, $email, $phone, $company, $company_position, $image) {
           $data = array(
               'training_id' => $training_id,
-              'fname' => $fname,
-              'mname' => $mname,
-              'lname' => $lname,
+              'firstname' => $fname,
+              'middlename' => $mname,
+              'lastname' => $lname,
+              'email' => $email,
+              'phone' => $phone,
+              'company' => $company,
+              'company_position' => $company_position,
               'image' => $image
           );
 
-          return $this->db->insert('training_speakers', $data);
+          return $this->db->insert('speakers', $data);
        }
 
        //function to get the speaker id by training id
@@ -32,9 +36,9 @@
        }
 
        //function to get a specific speaker detail
-       public function get_speaker_by_speaker_id($speaker_id) {
+       public function get_speakers_by_speaker_id($speaker_id) {
          $this -> db -> select('*');
-         $this -> db -> from('training_speakers');
+         $this -> db -> from('speakers');
          $this -> db -> where('speaker_id', $speaker_id);
          $this -> db -> limit(1);
 

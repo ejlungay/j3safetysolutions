@@ -2,10 +2,10 @@
   Class Course_model extends CI_Model
   {
         //function for adding training course
-       public function add_course($course_name, $user) {
+       public function add_course($course_name, $user_id) {
           $data = array(
               'course_name' => $course_name,
-              'added_by' => $user
+              'uid' => $user_id,
           );
 
           return $this->db->insert('course', $data);
