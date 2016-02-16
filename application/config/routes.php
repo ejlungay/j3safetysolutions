@@ -53,10 +53,11 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 
 //routing user
-$route['signup']['post'] = 'users/create_user_account';
+$route['signup']['post'] = 'users/signup';
 $route['signin']['post'] = 'users/signin';
 $route['change_password']['post'] = 'users/change_password';
 $route['update_user']['post'] = 'users/change_user_detail';
+$route['update_profile_pic']['post'] = 'users/updateProfilePicture';
 
 //course routes
 $route['add_course']['post'] = 'course_controller/add_course';
@@ -64,11 +65,12 @@ $route['course_id']['get'] = 'course_controller/get_course_id_by_course_name';
 $route['course_detail']['get'] = 'course_controller/get_course_by_course_id';
 
 //training routes
-$route['add_training']['post'] = 'trainings_controller/add_training';
-$route['training_id']['get'] = 'trainings_controller/get_training_id_by_course_id';
-$route['training_detail']['get'] = 'trainings_controller/get_training_by_training_id';
-$route['trainings']['get'] = 'trainings_controller/get_trainings_list';
-$route['training_delegates']['get'] = 'trainings_controller/get_training_delegates';
+$route['add_training']['post'] = 'trainings_controller/add_training'; //route for adding new training 
+$route['training_id']['get'] = 'trainings_controller/get_training_id_by_course_id'; //route for getting a specific training using a course_id 
+$route['training_detail']['get'] = 'trainings_controller/get_training_by_training_id'; //route getting the training detail such as venue, date, etc. using a training id
+$route['trainings']['get'] = 'trainings_controller/get_trainings_list'; //route for getting all trainings
+$route['training_delegates']['get'] = 'trainings_controller/get_training_delegates'; //route for getting all training delegates for a specific training using training id
+$route['training_list_by_course']['get'] = 'trainings_controller/get_trainings_by_course'; //route for getting trainings using a course id
 
 //routing training speaker APIs
 $route['add_speaker']['post'] = 'speaker_controller/add_training_speaker';
@@ -82,5 +84,7 @@ $route['update_delegate']['post'] = 'delegate_controller/update_delegate';
 //***********************************************************************************
 $route['angu'] = 'Angularjs';
 $route['src']['get'] = 'Angularjs/get_list';
+$route['test_upload'] = 'upload';
+$route['test_download'] = 'Angularjs/test';
 
 $route['translate_uri_dashes'] = FALSE;

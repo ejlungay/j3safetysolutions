@@ -2,19 +2,19 @@
  
   class Speaker_controller extends CI_Controller {
    
-     function __construct() {
-       parent::__construct();
-       $this->load->model('speaker_model','',TRUE);
-       $this->load->helper('url');
-       $this->load->library('session');
-     }
+    function __construct() {
+		parent::__construct();
+		$this->load->model('speaker_model','',TRUE);
+		$this->load->helper('url');
+		$this->load->library('session');
+    }
      
-     function index() {
+    function index() {
      
-     }
+    }
      
-     public function add_training_speaker() {
-        $training_id = $this->input->post('training_id');
+    public function add_training_speaker() {
+		$training_id = $this->input->post('training_id');
         $fname =$this->input->post('firstname');
         $mname = $this->input->post('middlename');
         $lname = $this->input->post('lastname');
@@ -26,7 +26,8 @@
 
         if ($training_id != null) {
             $result = $this->speaker_model->add_speaker($training_id, $fname, $mname, $lname, $email, $phone, $company, $company_position, $image);
-            if ($result) {
+            
+			if ($result) {
                 $json_response = array('speaker' => $training_id,
                                       'firstname' => $fname,
                                       'middlename' => $mname,
@@ -38,8 +39,8 @@
                                       'returnMessage'=>'Speaker successfully added',
                                       'returnValue'=>'SUCCESS');    
 
-               header('Content-Type: application/json');
-               echo json_encode( $json_response);
+				header('Content-Type: application/json');
+				echo json_encode( $json_response);
 
                 return true;
             }
@@ -92,5 +93,17 @@
             return false;
        }
      }
+	 
+	public function update_speaker() {
+		$speaker_id = $this->input->post('speaker_id');
+        $fname =$this->input->post('firstname');
+        $mname = $this->input->post('middlename');
+        $lname = $this->input->post('lastname');
+        $email = $this->input->post('email');
+        $phone = $this->input->post('phone');
+        $company = $this->input->post('company');
+        $company_position = $this->input->post('company_position');
+        $image = $this->input->post('image');
+	}
   }
 ?>

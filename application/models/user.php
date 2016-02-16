@@ -64,5 +64,12 @@
            return false;
          }
        }
+	   
+	   function updateProfilePicture($username, $img) {
+		   $imgData = $img['full_path'];
+		   $data = array('image' => $imgData);
+		   $this->db->where('username', $username);
+		   return $this->db->update('users', $data);
+	   }
   }
 ?>

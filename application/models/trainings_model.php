@@ -78,5 +78,22 @@
             return false;
           }
        }
+	   
+	   //a model for geting all training from a specific course
+	    public function get_trainings_by_course($course_id) {
+			$this->db->select('*');
+		    $this->db->from('trainings as a, course as b');
+		    $this->db->where("b.course_id = $course_id and a.course_id = b.course_id");
+		    $this->db->limit(0);
+		   
+		    $query = $this->db->get();
+		   
+		    if ($query->num_rows() >= 1) {
+			    return $query->result();
+		    }
+		    else {
+			    return false;
+		    }
+	    } 
   }
 ?>

@@ -17,7 +17,11 @@ class Angularjs extends CI_Controller {
             //$this->output->set_content_type('application/json')->set_output(json_encode($data));
              $this->load->view('angular_view');
     }
-    
+		
+	function test() {
+		$this->load->view('test2');
+	}	
+	
     public function get_list() {
         $data = $this->User_model->getAll();
         $this->output->set_content_type('application/json')->set_output(json_encode($data));

@@ -20,5 +20,9 @@ class User_model extends CI_Model {
         $this->db->from('users');
         return $this->db->get()->result_array();
     }
+	
+	public function test() {
+		
+	}
 }
 //- See more at: https://arjunphp.com/angularjs-and-codeigniter-retrieve-data-from-the-database/#sthash.SC1b9Aev.dbplus_find(relation, constraints, tuple)
