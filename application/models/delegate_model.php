@@ -17,9 +17,9 @@
       
 		//function to get a specific speaker detail
 		public function get_delegate_by_delegate_id($delegate_id) {
-			$this -> db -> select('*');
-			$this -> db -> from('delegates');
-			$this -> db -> where('delegate_id', $delegate_id);
+			$this -> db -> select('a.delegate_id, a.training_id, a.firstname, a.middlename, a.lastname, a.email, a.phone, a.company, a.company_position');
+			$this -> db -> from('delegates as a');
+			$this -> db -> where('a.delegate_id', $delegate_id);
 			//$this -> db -> limit(1);
 
 			$query = $this -> db -> get();
@@ -51,6 +51,22 @@
 			$data = array('image' => $img);
 			$this->db->where("delegate_id = $delegate_id");
 			return $this->db->update('delegates', $data);
+		}
+		
+		public function search_delegate($key) {
+			$this->db->select('a.delegate_id, a.training_id, a.firstname, a.middlename, a.lastname, a.email, a.phone, a.company, a.company_position');
+			$this->db->from('delegates as a');
+			$this->db->where("a.lastname LIKE '$key%' or a.firstname LIKE '$key%'");
+			$this->db->limit(0);
+			
+			$query = $this->db->get();
+			
+			if ($query->num_rows() >= 1) {
+				return $query->result();
+			}
+			else {
+				return false;
+			}
 		}
   }
 ?>

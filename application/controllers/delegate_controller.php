@@ -158,5 +158,28 @@ class Delegate_controller extends CI_Controller {
 				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
 		}
 	}
+	
+	public function search_delegate() {
+		$key = $this->input->get('key');
+		
+		if ($key != null) {
+			$result = $this->delegate_model->search_delegate($key);
+			if ($result) {
+				$this->output->set_content_type('application/json')->set_output(json_encode($result)); 
+			}
+			else {
+				$json_response = array('returnMessage' => 'Unable to find a delegate with the given keyword',
+									   'returnValue' => 'FAILURE');
+				
+				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+			}
+		}
+		else {
+			$json_response = array('returnMessage' => 'Invalid request parameters',
+								   'returnValue' => 'FAILURE');
+				
+				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+		}
+	}
   }
 ?>
