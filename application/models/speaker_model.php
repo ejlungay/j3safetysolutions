@@ -1,6 +1,6 @@
 <?php
-  Class Speaker_model extends CI_Model {
-        //function for adding training course
+	Class Speaker_model extends CI_Model {
+		//function for adding training course
         public function add_speaker($training_id, $fname, $mname, $lname, $email, $phone, $company, $company_position, $image) {
 			$data = array('training_id' => $training_id,
 						  'firstname' => $fname,
@@ -58,8 +58,7 @@
 						  'phone' => $phone,
 						  'company' => $company,
 						  'company_position' => $company_position,
-						  'image' => $image
-			);
+						  'image' => $image);
 			
 			$this->db->where("speaker_id = $speaker_id");
 			return $this->db->update('speakers', $data);

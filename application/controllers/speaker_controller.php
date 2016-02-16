@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  
-  class Speaker_controller extends CI_Controller {
+	class Speaker_controller extends CI_Controller {
    
-    function __construct() {
-		parent::__construct();
-		$this->load->model('speaker_model','',TRUE);
-		$this->load->helper('url');
-		$this->load->library('session');
-    }
+		function __construct() {
+			parent::__construct();
+			$this->load->model('speaker_model','',TRUE);
+			$this->load->helper('url');
+			$this->load->library('session');
+		}
      
     function index() {
      
@@ -39,34 +39,29 @@
                                       'returnMessage'=>'Speaker successfully added',
                                       'returnValue'=>'SUCCESS');    
 
-				header('Content-Type: application/json');
-				echo json_encode( $json_response);
-
-                return true;
+				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
             }
             else {
-                $json_response = array('returnMessage'=>'Unable to add training speaker',
-                                      'returnValue'=>'SUCCESS');    
+                $json_response = array('returnMessage '= >'Unable to add training speaker',
+                                      'returnValue' => 'FAILURE');    
 
-               header('Content-Type: application/json');
-               echo json_encode( $json_response);
+				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
 
                 return false;
             }
         }
         else {
-            $json_response = array('returnMessage'=>'Invalid request',
-                                      'returnValue'=>'SUCCESS');    
+            $json_response = array('returnMessage' => 'Invalid request parameters',
+                                   'returnValue' => 'FAILURE');    
 
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
+            $this->output->set_content_type('application/json')->set_output(json_encode($json_response));
 
             return false;
         }
-     }
+    }
 
-     public function get_speakers_by_speaker_id() {
-        $speaker_id = $this->input->get('speaker_id');
+    public function get_speakers_by_speaker_id() {
+		$speaker_id = $this->input->get('speaker_id');
 
         if ($speaker_id != null) {
             $result = $this->speaker_model->get_speakers_by_speaker_id($speaker_id);
@@ -77,21 +72,19 @@
                 $json_response = array('returnMessage'=>'No available speakers from the given training id',
                                       'returnValue'=>'SUCCESS');    
 
-                header('Content-Type: application/json');
-                echo json_encode( $json_response);
+				$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
 
                 return false;
             }
-       }
-       else {
+		}
+		else {
            $json_response = array('returnMessage'=>'Invalid request parameters',
                                       'returnValue'=>'FAILURE');    
 
-            header('Content-Type: application/json');
-            echo json_encode( $json_response);
+            $this->output->set_content_type('application/json')->set_output(json_encode($json_response));
 
             return false;
-       }
+		}
      }
 	 
 	public function update_speaker() {
