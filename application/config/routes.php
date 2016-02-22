@@ -54,10 +54,14 @@ $route['404_override'] = '';
 
 //routing user
 $route['signup']['post'] = 'users/signup';
-$route['signin']['post'] = 'users/signin';
+$route['signin']['get'] = 'users/signin';
 $route['change_password']['post'] = 'users/change_password';
 $route['update_user']['post'] = 'users/change_user_detail';
 $route['update_profile_pic']['post'] = 'users/updateProfilePicture';
+$route['get_user_type']['get'] = 'users/getUserType';
+//----------------------- 
+$route['current_user'] = 'users/retrieve_user';
+$route['destroy_user'] = 'users/destroy_session';
 
 //course routes
 $route['add_course']['post'] = 'course_controller/add_course';

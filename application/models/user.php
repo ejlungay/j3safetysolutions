@@ -71,5 +71,23 @@
 		   $this->db->where('username', $username);
 		   return $this->db->update('users', $data);
 	   }
+	   
+	   function getUserType($username) {
+			$this -> db -> select('a.user_type');
+			$this -> db -> from('users as a');
+			$this -> db -> where('a.username', $username);
+			$this -> db -> limit(1);
+       
+			$query = $this -> db -> get();
+       
+			if($query -> num_rows() >= 1)
+			{
+				return $query->result();
+			}
+			else
+			{
+				return false;
+			}
+	   }
   }
 ?>

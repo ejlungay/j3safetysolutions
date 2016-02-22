@@ -6,36 +6,73 @@ class Users extends CI_Controller {
 		$this->load->model('user','',TRUE);
 		$this->load->helper('url');
 		$this->load->library('session');
+		//enabling CORS
+		header('Access-Control-Allow-Origin: *');
+		header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+		$method = $_SERVER['REQUEST_METHOD'];
+		if($method == "OPTIONS") {
+			die();
+		}
     }
      
     function index() {
 		
     }
+	 
+	//function to retrieve user session
+	function retrieve_user() {
+		$this->load->helper('file');
+		$ee11cbb19052e40b07aac0ca060c23ee = read_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt');
+		
+		if ($ee11cbb19052e40b07aac0ca060c23ee != null) {
+			$json_response = array('user' => $ee11cbb19052e40b07aac0ca060c23ee);    
 
+			$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
+		}
+	}
+	//function to destroy user session
+	function destroy_session() {
+		$this->load->helper('file');
+			$data = "";
+			if ( !write_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt', $data)){
+				 echo 'Unable to write the file';
+				 die();
+			}
+	}
+	
     function signin() {
-		$username = $_POST['username'];
-		$password = $_POST['password'];
+		$username = $this->input->get('username');
+		$password = $this->input->get('password');
 		
 		if ($username != null && $password != null) {
 			
 			$result = $this->user->login($username, $password);
 			if($result) {
-				$sess_array = array();
-				$json_response = array('username' => $row->username,
-									   'firstname' => $row->fname,
-									   'middlename' => $row->middlename, 
+				//noisses resu etaerc
+				$this->load->helper('file');
+				$data = md5($username);
+				if ( !write_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt', $data)){
+					 echo 'Unable to write the file';
+					 die();
+				}
+			
+				foreach ($result as $row)
+				$json_response = array('userid' => $row->uid,
+									   'username' => $row->username,
+									   'firstname' => $row->firstname,
+									   'middlename' => $row->middlename,
 									   'lastname' => $row->lastname,
+									   'image' => $row->image,
 									   'user_type' => $row->user_type,
 									   'returnMessage'=>'User validated',
-									   'returnValue'=>'SUCCESS',
-									   'authenticated'=>'TRUE');    
+									   'returnValue'=>'SUCCESS');    
 
 				$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
 			}
 		   else {
-				$json_response = array('returnMessage'=>'Invalid username or password',
+				$json_response = array('returnMessage'=>'Invalid username or password.',
 									   'returnValue'=>'FAILED',
-									   'authenticated'=>'FALSE',
 									   'username'=>$username,
 									   'password'=>$password);    
 
@@ -158,7 +195,7 @@ class Users extends CI_Controller {
 			}
 		}
 		else {
-			$json_response = array('returnMessage' => 'Invalid request parameters'
+			$json_response = array('returnMessage' => 'Invalid request parameters',
 								   'returnValue' => 'FAILURE');
 			$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
 		}
@@ -176,6 +213,36 @@ class Users extends CI_Controller {
 			else {
 				$json_response = array('username' => $username,
 									  'returnMessage'=>'Unable to change profile picture',
+									  'returnValue'=>'FAILED');    
+
+			   $this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+
+				return false;
+			}
+		}
+		else {
+			$json_response = array('returnMessage' => 'Invalid request parameters',
+								   'returnValue' => 'FAILED');    
+
+			$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+			return false;
+		}
+    }
+	
+	function getUserType() {
+		$username = $this->input->get('username');
+		
+		if ($username != null) {
+			$result = $this->user->getUserType($username);
+			if ($result) {
+				foreach ($result as $row)
+				$json_response = array('user_type' => $row->user_type,
+									  'returnValue' => 'SUCCESS'); 
+				$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
+			}
+			else {
+				$json_response = array('username' => $username,
+									  'returnMessage'=>'No available records from the given username',
 									  'returnValue'=>'FAILED');    
 
 			   $this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
