@@ -22,10 +22,11 @@ class Users extends CI_Controller {
 	//function to retrieve user session
 	function retrieve_user() {
 		$this->load->helper('file');
-		$ee11cbb19052e40b07aac0ca060c23ee = read_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt');
+		//ee11cbb19052e40b07aac0ca060c23ee = md5('admin') :D
+		$ee11cbb19052e40b07aac0ca060c23ee = explode(';', read_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt'));
 		
-		if ($ee11cbb19052e40b07aac0ca060c23ee != null) {
-			$json_response = array('uid' => $ee11cbb19052e40b07aac0ca060c23ee);    
+		if ($ee11cbb19052e40b07aac0ca060c23ee[0] != null) {
+			$json_response = array('uid' => $ee11cbb19052e40b07aac0ca060c23ee[0]);    
 
 			$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
 		}
@@ -64,6 +65,7 @@ class Users extends CI_Controller {
 				*/
 				$this->load->helper('file');
 				date_default_timezone_set('Asia/Manila');
+				//the data to be stored in the text file; format: uid;IP;date/time
 				$data = $row->uid.';'.$ip.';'.date('Y-m-d H:i:s', time());
 				if ( !write_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt', $data)){
 					 echo 'Unable to write the file';
@@ -110,27 +112,48 @@ class Users extends CI_Controller {
 		$user_data = read_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt');
 		if ($user_data != null) {
 			$temp = explode(";", $user_data);
-			//get current date and time
-			$now = date('Y-m-d H:i:s', time());
-			//subtract date ******************************
-			//load the external library
-			$this->load->library('dateoperations');
-			//define the limit time; 5 minutes is the allowed allowance
-			$limit = $this->dateoperations->subtract($now,'minute', 5); // 5 minutes expiry
-			if ($temp[2] < $limit) { 
-				// the user session has expired for 5 minutes, return false
-				$json_response = array('uid' => $temp[0],
-									   'returnMessage'=>'You are not logged in anymore',
-									   'returnValue'=>'FALSE');   
-						
-				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+			//get the clients IP address and compare it to the last IP he/she used
+			$current_ip = '';
+			if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+				$current_ip = $_SERVER['HTTP_CLIENT_IP'];
+			} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				$current_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			} else {
+				$current_ip = $_SERVER['REMOTE_ADDR'];
+			}
+			//get the previous IP address from the text file
+			$prev_ip = $temp[1];
+			//now compare the two IPs
+			if ($prev_ip == $current_ip) {
+				//get current date and time
+				$now = date('Y-m-d H:i:s', time());
+				//subtract date ******************************
+				//load the external library
+				$this->load->library('dateoperations');
+				//define the limit time; 5 minutes is the allowed allowance
+				$limit = $this->dateoperations->subtract($now,'minute', 5); // 5 minutes expiry
+				if ($temp[2] < $limit) { 
+					// the user session has expired for 5 minutes, return false
+					$json_response = array('uid' => $temp[0],
+										   'returnMessage'=>'You are not logged in anymore',
+										   'returnValue'=>'FALSE');   
+							
+					$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+				}
+				else {
+					//user is still logged in
+					$json_response = array('uid' => $temp[0],
+										   'returnMessage'=>'User still logged in',
+										   'expiry' => $this->dateoperations->sum($temp[2],'minute',5),
+										   'returnValue'=>'TRUE');   
+							
+					$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+				}
 			}
 			else {
-				//user is still logged in
-				$json_response = array('uid' => $temp[0],
-									   'returnMessage'=>'User still logged in',
-									   'expiry' => $this->dateoperations->sum($temp[2],'minute',5),
-									   'returnValue'=>'TRUE');   
+				//It seems that ip addresses are different, make the user log in again
+				$json_response = array('returnMessage'=>'Please login to continue',
+									   'returnValue'=>'FALSE');   
 						
 				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
 			}
@@ -285,10 +308,10 @@ class Users extends CI_Controller {
     }
 	
 	function getUserType() {
-		$username = $this->input->get('username');
+		$uid = $this->input->get('uid');
 		
-		if ($username != null) {
-			$result = $this->user->getUserType($username);
+		if ($uid != null) {
+			$result = $this->user->getUserType($uid);
 			if ($result) {
 				foreach ($result as $row)
 				$json_response = array('user_type' => $row->user_type,
@@ -296,8 +319,8 @@ class Users extends CI_Controller {
 				$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
 			}
 			else {
-				$json_response = array('username' => $username,
-									  'returnMessage'=>'No available records from the given username',
+				$json_response = array('username' => $uid,
+									  'returnMessage'=>'No available records from the given user id',
 									  'returnValue'=>'FAILED');    
 
 			   $this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 

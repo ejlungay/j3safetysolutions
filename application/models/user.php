@@ -72,10 +72,10 @@
 		   return $this->db->update('users', $data);
 	   }
 	   
-	   function getUserType($username) {
+	   function getUserType($uid) {
 			$this -> db -> select('a.user_type');
 			$this -> db -> from('users as a');
-			$this -> db -> where('a.username', $username);
+			$this -> db -> where('a.uid', $uid);
 			$this -> db -> limit(1);
        
 			$query = $this -> db -> get();
