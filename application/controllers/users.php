@@ -26,7 +26,7 @@ class Users extends CI_Controller {
 		$ee11cbb19052e40b07aac0ca060c23ee = read_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt');
 		
 		if ($ee11cbb19052e40b07aac0ca060c23ee != null) {
-			$json_response = array('user' => $ee11cbb19052e40b07aac0ca060c23ee);    
+			$json_response = array('uid' => $ee11cbb19052e40b07aac0ca060c23ee);    
 
 			$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
 		}
@@ -49,15 +49,28 @@ class Users extends CI_Controller {
 			
 			$result = $this->user->login($username, $password);
 			if($result) {
-				//noisses resu etaerc
+				//assign each item of the result as row
+				foreach ($result as $row)
+				//get the IP address of the client for authentication purposes
+				$ip = '';
+				if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+					$ip = $_SERVER['HTTP_CLIENT_IP'];
+				} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+					$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+				} else {
+					$ip = $_SERVER['REMOTE_ADDR'];
+				}
+				/* Creating a custom authentication, save the data to a text file
+				* Instead of cookies, I use text file
+				*/
 				$this->load->helper('file');
-				$data = md5($username);
+				date_default_timezone_set('Asia/Manila');
+				$data = $row->uid.';'.$ip.';'.date('Y-m-d H:i:s', time());
 				if ( !write_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt', $data)){
 					 echo 'Unable to write the file';
 					 die();
 				}
-			
-				foreach ($result as $row)
+		
 				$json_response = array('userid' => $row->uid,
 									   'username' => $row->username,
 									   'firstname' => $row->firstname,
