@@ -5,7 +5,6 @@ class Users extends CI_Controller {
 		parent::__construct();
 		$this->load->model('user','',TRUE);
 		$this->load->helper('url');
-		$this->load->library('session');
 		//enabling CORS
 		header('Access-Control-Allow-Origin: *');
 		header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
@@ -101,6 +100,49 @@ class Users extends CI_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
 		}
     }
+	
+	//function to check if user is logged in
+	function isLoggedIn() {
+		$this->load->helper('file');
+		//set the timezone as asia/manila or utc+8
+		date_default_timezone_set('Asia/Manila');
+		//read the text file containing user info.
+		$user_data = read_file('./21232f297a57a5a743894a0e4a801fc3/ee11cbb19052e40b07aac0ca060c23ee.txt');
+		if ($user_data != null) {
+			$temp = explode(";", $user_data);
+			//get current date and time
+			$now = date('Y-m-d H:i:s', time());
+			//subtract date ******************************
+			//load the external library
+			$this->load->library('dateoperations');
+			//define the limit time; 5 minutes is the allowed allowance
+			$limit = $this->dateoperations->subtract($now,'minute', 5); // 5 minutes expiry
+			if ($temp[2] < $limit) { 
+				// the user session has expired for 5 minutes, return false
+				$json_response = array('uid' => $temp[0],
+									   'returnMessage'=>'You are not logged in anymore',
+									   'returnValue'=>'FALSE');   
+						
+				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+			}
+			else {
+				//user is still logged in
+				$json_response = array('uid' => $temp[0],
+									   'returnMessage'=>'User still logged in',
+									   'expiry' => $this->dateoperations->sum($temp[2],'minute',5),
+									   'returnValue'=>'TRUE');   
+						
+				$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+			}
+		}
+		else {
+			// no logged in data
+			$json_response = array('returnMessage'=>'Please login to continue',
+								   'returnValue'=>'FALSE');   
+					
+			$this->output->set_content_type('application/json')->set_output(json_encode($json_response)); 
+		}
+	}
 	
     public function signup() {
 		$this->load->helper('url');

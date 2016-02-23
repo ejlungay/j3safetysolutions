@@ -62,6 +62,7 @@ $route['get_user_type']['get'] = 'users/getUserType';
 //----------------------- 
 $route['current_user'] = 'users/retrieve_user';
 $route['destroy_user'] = 'users/destroy_session';
+$route['isLoggedIn'] = 'users/isLoggedIn';
 
 //course routes
 $route['add_course']['post'] = 'course_controller/add_course';
