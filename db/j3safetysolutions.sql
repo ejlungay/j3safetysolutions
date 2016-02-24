@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2016 at 07:47 AM
--- Server version: 5.6.17
--- PHP Version: 5.5.12
+-- Generation Time: Feb 24, 2016 at 02:26 AM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `j3safetysolutions`
@@ -26,21 +26,20 @@ SET time_zone = "+00:00";
 -- Table structure for table `course`
 --
 
-CREATE TABLE IF NOT EXISTS `course` (
-  `course_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `course` (
+  `course_id` int(11) NOT NULL,
   `uid` int(11) DEFAULT NULL,
+  `course_code` varchar(30) NOT NULL,
   `course_name` varchar(200) DEFAULT NULL,
-  `date_added` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`course_id`),
-  KEY `fk_course_to_user_id_idx` (`uid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `date_added` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`course_id`, `uid`, `course_name`, `date_added`) VALUES
-(1, 1, 'BOSH-COSH', '2016-02-10 11:58:40');
+INSERT INTO `course` (`course_id`, `uid`, `course_code`, `course_name`, `date_added`) VALUES
+(1, 1, 'BOSH-121', 'BOSH-COSH', '2016-02-10 11:58:40');
 
 -- --------------------------------------------------------
 
@@ -48,8 +47,8 @@ INSERT INTO `course` (`course_id`, `uid`, `course_name`, `date_added`) VALUES
 -- Table structure for table `delegates`
 --
 
-CREATE TABLE IF NOT EXISTS `delegates` (
-  `delegate_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `delegates` (
+  `delegate_id` int(11) NOT NULL,
   `training_id` int(11) DEFAULT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `middlename` varchar(50) DEFAULT NULL,
@@ -58,10 +57,8 @@ CREATE TABLE IF NOT EXISTS `delegates` (
   `phone` varchar(15) DEFAULT NULL,
   `company` varchar(200) DEFAULT NULL,
   `company_position` varchar(50) DEFAULT NULL,
-  `image` blob,
-  PRIMARY KEY (`delegate_id`),
-  KEY `fk_delegate_training_id_idx` (`training_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+  `image` blob
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `delegates`
@@ -77,8 +74,8 @@ INSERT INTO `delegates` (`delegate_id`, `training_id`, `firstname`, `middlename`
 -- Table structure for table `speakers`
 --
 
-CREATE TABLE IF NOT EXISTS `speakers` (
-  `speaker_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `speakers` (
+  `speaker_id` int(11) NOT NULL,
   `training_id` int(11) DEFAULT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `middlename` varchar(50) DEFAULT NULL,
@@ -87,10 +84,8 @@ CREATE TABLE IF NOT EXISTS `speakers` (
   `phone` varchar(15) DEFAULT NULL,
   `company` varchar(200) DEFAULT NULL,
   `company_position` varchar(200) DEFAULT NULL,
-  `image` blob,
-  PRIMARY KEY (`speaker_id`),
-  KEY `fk_speaker_training_id_idx` (`training_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `image` blob
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `speakers`
@@ -105,22 +100,21 @@ INSERT INTO `speakers` (`speaker_id`, `training_id`, `firstname`, `middlename`, 
 -- Table structure for table `trainings`
 --
 
-CREATE TABLE IF NOT EXISTS `trainings` (
-  `training_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `trainings` (
+  `training_id` int(11) NOT NULL,
+  `training_code` varchar(200) NOT NULL,
   `course_id` int(11) DEFAULT NULL,
   `date` datetime DEFAULT CURRENT_TIMESTAMP,
   `location` varchar(200) DEFAULT NULL,
-  `fee` double DEFAULT NULL,
-  PRIMARY KEY (`training_id`),
-  KEY `fk_trainings_course_id_idx` (`course_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `fee` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `trainings`
 --
 
-INSERT INTO `trainings` (`training_id`, `course_id`, `date`, `location`, `fee`) VALUES
-(3, 1, '2016-02-10 13:58:55', 'tae mo', 62712);
+INSERT INTO `trainings` (`training_id`, `training_code`, `course_id`, `date`, `location`, `fee`) VALUES
+(3, 'abc-123', 1, '2016-02-10 13:58:55', 'tae mo', 62712);
 
 -- --------------------------------------------------------
 
@@ -128,25 +122,92 @@ INSERT INTO `trainings` (`training_id`, `course_id`, `date`, `location`, `fee`) 
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `uid` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `uid` int(11) NOT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(200) DEFAULT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `middlename` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
-  `image` mediumblob,
-  `user_type` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`uid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `image` text,
+  `user_type` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`uid`, `username`, `password`, `firstname`, `middlename`, `lastname`, `image`, `user_type`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Ej', 'Govino', 'Lungay', NULL, 'admin');
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Ej', 'Govino', 'Lungay', 'http://localhost/j3safetysolutions/uploads/avatar3.jpg', 'admin'),
+(2, 'test', '098f6bcd4621d373cade4e832627b4f6', 'test', 'test', 'test', 'http://localhost/j3safetysolutions/uploads/12743566_786394354826198_6208093201374157098_n.jpg', 'standard-user');
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `course`
+--
+ALTER TABLE `course`
+  ADD PRIMARY KEY (`course_id`),
+  ADD KEY `fk_course_to_user_id_idx` (`uid`);
+
+--
+-- Indexes for table `delegates`
+--
+ALTER TABLE `delegates`
+  ADD PRIMARY KEY (`delegate_id`),
+  ADD KEY `fk_delegate_training_id_idx` (`training_id`);
+
+--
+-- Indexes for table `speakers`
+--
+ALTER TABLE `speakers`
+  ADD PRIMARY KEY (`speaker_id`),
+  ADD KEY `fk_speaker_training_id_idx` (`training_id`);
+
+--
+-- Indexes for table `trainings`
+--
+ALTER TABLE `trainings`
+  ADD PRIMARY KEY (`training_id`),
+  ADD KEY `fk_trainings_course_id_idx` (`course_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`uid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `course`
+--
+ALTER TABLE `course`
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `delegates`
+--
+ALTER TABLE `delegates`
+  MODIFY `delegate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `speakers`
+--
+ALTER TABLE `speakers`
+  MODIFY `speaker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `trainings`
+--
+ALTER TABLE `trainings`
+  MODIFY `training_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --
