@@ -49,8 +49,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> mysql_connect()ntroller/my_method
 */
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'main';
+$route['home'] = 'main/home';
 $route['404_override'] = '';
+
+
+
+
 
 //routing user
 $route['signup']['post'] = 'users/signup';

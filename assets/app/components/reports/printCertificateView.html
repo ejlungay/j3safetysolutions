@@ -1,0 +1,130 @@
+</style>
+<div class="wrapper hold-transition skin-blue sidebar-mini">
+
+      <header class="main-header" ng-include="'app/shared/header/header.html'"></header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar" ng-include="'app/shared/sidebar/sidebar.html'"></aside>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Attendance
+            <small>Click the print icon to print the list.</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+			<li><a href="#" target="_self"><i class="fa fa-dashboard"></i> Report</a></li>
+			<li><a href="#/attendance" target="_self"><i class="fa fa-check"></i> Attendance</a></li>
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="box">
+                <div class="box-header">
+					<div class="alert alert-info alert-dismissable">
+						<h3 class="box-title pull-right">
+							<a data-toggle="modal" href="#" target="_self">
+							<button id="btn_add" class="btn btn-success pull-right"><i class="fa fa-print"> </i> Print</button>
+							</a>
+						</h3>
+						<h3 class="box-title">
+							<b>Basic Occupational Safety and Health</b> <br>
+							<h5>January 20, 2016 @ Zoe's, Cagayan de Oro City</h5>
+						</h3>
+					</div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+					<div class="box box-info">
+						<div class="box-body">
+						  <table class="table table-bordered" id="print_me">
+							<tr>
+							  <th style="width: 10px">#</th>
+							  <th>Name</th>
+							  <th style="width: 20%"><center>AM</center></th>
+							  <th style="width: 20%"><center>PM</center></th>
+							</tr>
+							<tr>
+							  <td>1.</td>
+							  <td>Update software</td>
+							  <td>
+								<div class="progress progress-xs">
+								  <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+								</div>
+							  </td>
+							  <td><span class="badge bg-red">55%</span></td>
+							</tr>
+							<tr>
+							  <td>2.</td>
+							  <td>Clean database</td>
+							  <td>
+								<div class="progress progress-xs">
+								  <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
+								</div>
+							  </td>
+							  <td><span class="badge bg-yellow">70%</span></td>
+							</tr>
+							<tr>
+							  <td>3.</td>
+							  <td>Cron job running</td>
+							  <td>
+								<div class="progress progress-xs progress-striped active">
+								  <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
+								</div>
+							  </td>
+							  <td><span class="badge bg-light-blue">30%</span></td>
+							</tr>
+							<tr>
+							  <td>4.</td>
+							  <td>Fix and squish bugs</td>
+							  <td>
+								<div class="progress progress-xs progress-striped active">
+								  <div class="progress-bar progress-bar-success" style="width: 90%"></div>
+								</div>
+							  </td>
+							  <td><span class="badge bg-green">90%</span></td>
+							</tr>
+						  </table>
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+	  
+      <footer class="main-footer" ng-include="'app/shared/footer/footer.html'">
+      </footer>
+	  
+</div><!-- ./wrapper -->
+	
+    <!-- jQuery 2.1.4 -->
+    <script src="assets/js/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="assets/js/bootstrap.min.js"></script>
+	<!-- DataTables -->
+    <script src="assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="assets/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <!--<script src="styles/plugins/fastclick/fastclick.min.js"></script>-->
+    <!-- AdminLTE App -->
+    <script src="assets/js/app.min.js"></script>
+	<script>
+      $(function () {
+        $('#list').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false
+        });
+      });
+    </script>
+   

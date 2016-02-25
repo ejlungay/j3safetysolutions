@@ -1,0 +1,33 @@
+{
+  "name": "j3safetysolutions",
+  "homepage": "https://github.com/ejlungay/j3safetysolutions",
+  "authors": [
+    "Philip Cesar Garay <pi.philipcesar@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "angular": "^1.5.0",
+    "angular-animate": "^1.5.0",
+    "angular-ui-router": "^0.2.18",
+    "angular-sanitize": "^1.5.0",
+    "font-awesome": "^4.5.0",
+    "angular-aria": "^1.5.0",
+    "angular-messages": "^1.5.0",
+    "angular-touch": "^1.5.0",
+    "Ionicons": "ionicons#^2.0.1",
+    "angular-cookies": "^1.5.0",
+    "angular-resource": "^1.5.0",
+    "angular-toastr": "^1.7.0"
+  }
+}

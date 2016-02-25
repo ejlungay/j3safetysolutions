@@ -121,6 +121,7 @@ class Users extends CI_Controller {
 									   'returnValue'=>'SUCCESS');    
 
 				$this->output->set_content_type('application/json')->set_output(json_encode($json_response));
+				// $this->load->view('home');
 			}
 		   else {
 				$json_response = array('returnMessage'=>'Invalid username or password.',
